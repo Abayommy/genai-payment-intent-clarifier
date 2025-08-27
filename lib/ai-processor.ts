@@ -21,6 +21,27 @@ export interface FraudFlags {
   score: number;
 }
 
+interface SEPAPayment {
+  paymentType: string;
+  creditorName?: string;
+  creditorIBAN?: string;
+  amount?: number;
+  currency: string;
+  remittanceInformation?: string;
+  executionDate: string;
+}
+
+interface FasterPayment {
+  paymentType: string;
+  payeeName?: string;
+  payeeAccountNumber?: string;
+  sortCode?: string;
+  amount?: number;
+  currency: string;
+  reference?: string;
+  paymentDateTime: string;
+}
+
 export class PaymentIntentProcessor {
   async processPaymentIntent(userInput: string): Promise<{
     intent: PaymentIntent;
@@ -62,7 +83,7 @@ export class PaymentIntentProcessor {
     
     Rules:
     - If amount contains currency symbol, extract both
-    - For names like "John", suggest full reference like "Payment to John"
+    - For names like John, suggest full reference like Payment to John
     - SEPA for EUR/European banks, FasterPayments for UK banks
     - Be conservative with confidence scores
     `;
@@ -168,7 +189,7 @@ export class PaymentIntentProcessor {
   }
 
   // SEPA payment formatting
-  formatSEPA(intent: PaymentIntent): any {
+  formatSEPA(intent: PaymentIntent): SEPAPayment {
     return {
       paymentType: 'SEPA',
       creditorName: intent.recipientName,
@@ -181,7 +202,7 @@ export class PaymentIntentProcessor {
   }
 
   // Faster Payments formatting  
-  formatFasterPayments(intent: PaymentIntent): any {
+  formatFasterPayments(intent: PaymentIntent): FasterPayment {
     return {
       paymentType: 'FasterPayments',
       payeeName: intent.recipientName,

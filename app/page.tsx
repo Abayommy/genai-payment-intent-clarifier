@@ -23,7 +23,7 @@ interface ProcessingResult {
   originalInput: string;
   parsedIntent: PaymentIntent;
   fraudAnalysis: FraudFlags;
-  formattedPayment: any;
+  formattedPayment: object | null;
   processingTimestamp: string;
 }
 
@@ -113,7 +113,7 @@ export default function PaymentIntentClarifier() {
                 <Send className="h-6 w-6 text-white" />
               </div>
               <span className="text-sm font-medium">Raw Input</span>
-              <span className="text-xs text-gray-500">"Pay John €50"</span>
+              <span className="text-xs text-gray-500">&quot;Pay John €50&quot;</span>
             </div>
             
             <ArrowRight className="h-6 w-6 text-gray-400" />
